@@ -1,7 +1,7 @@
 package com.kiesoft.sstarter.service.language;
 
-import com.kiesoft.sstarter.crud.*;
 import com.kiesoft.sstarter.dto.language.LanguageDTO;
+import com.kiesoft.sstarter.service.*;
 
 public interface LanguageService extends
         FindOneService<LanguageDTO>,

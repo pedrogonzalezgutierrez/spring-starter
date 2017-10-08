@@ -1,4 +1,4 @@
-package com.kiesoft.sstarter.crud;
+package com.kiesoft.sstarter.service;
 
 import java.util.List;
 

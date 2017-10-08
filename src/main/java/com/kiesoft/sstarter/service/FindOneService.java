@@ -1,4 +1,4 @@
-package com.kiesoft.sstarter.crud;
+package com.kiesoft.sstarter.service;
 
 public interface FindOneService<Entity> {
 
