@@ -1,0 +1,105 @@
+buildscript {
+
+    ext {
+        springBootVersion = "1.5.2.RELEASE"
+    }
+    
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") 
+    }
+    
+    repositories {
+		mavenCentral()
+        maven { url "http://repo.spring.io/libs-milestone" }
+		maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+            srcDirs = ['src/integrationTest/java']
+        }
+        resources.srcDir file('src/integrationTest/resources')
+    }
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+    //providedRuntime
+}
+
+dependencies {
+	// Spring boot
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("org.springframework.boot:spring-boot-starter-jdbc")
+
+    // Testing
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile("org.springframework.security:spring-security-test")
+
+	// Mapping framework    
+	compile("net.sf.dozer:dozer:5.5.1")    
+    
+    // Amazon Web Services
+    compile("org.springframework.cloud:spring-cloud-aws-context:1.1.3.RELEASE")
+    
+    // Util to manipulate IO
+    compile("commons-io:commons-io:2.4")
+    
+    // Security
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.security:spring-security-taglibs")
+    compile("com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:1.1")
+    
+    // Frontend
+    compile("org.apache.tiles:tiles-extras:3.0.5")
+    compile("javax.servlet:jstl:1.2")
+    
+    // JPA Driver for Database
+	compile('org.postgresql:postgresql:9.4.1212')
+    compile 'org.hibernate:hibernate-hikaricp:4.3.7.Final'
+	// SQLite
+	compile('org.xerial:sqlite-jdbc:3.8.11.2')
+    // H2 In Memory
+    compile("com.h2database:h2:1.4.195")
+
+
+    // Tomcat
+    // This is for IntelliJ
+    compile("org.springframework.boot:spring-boot-starter-tomcat")
+    compile("org.apache.tomcat.embed:tomcat-embed-jasper")
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.9'
+}
+
+task integrationTest(type: Test) {
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    //outputs.upToDateWhen { false }
+}
+
+tasks.withType(Test) {
+    reports.html.destination = file("${reporting.baseDir}/${name}")
+}
+check.dependsOn integrationTest
+integrationTest.mustRunAfter test
