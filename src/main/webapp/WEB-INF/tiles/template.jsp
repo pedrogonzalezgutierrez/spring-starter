@@ -54,7 +54,7 @@
 	    </div>
 	    
 		<!-- JQuery -->
-		<spring:url value="/resources/js/jquery-1.12.3.min.js" var="jquery_js_url" />
+		<spring:url value="/resources/js/jquery-3.2.1.min.js" var="jquery_js_url" />
 		<script src="${jquery_js_url}" type="text/javascript"><!-- required for FF3 and Opera --></script>
 		
 		<!-- Bootstrap JS -->
