@@ -1,9 +1,5 @@
 buildscript {
 
-    ext {
-        springBootVersion = "1.5.2.RELEASE"
-    }
-    
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") 
     }
@@ -23,12 +19,22 @@ apply plugin: 'org.springframework.boot'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+jar {
+    baseName = 'spring-starter'
+    version =  '1.0.0'
+}
+
 repositories {
     mavenLocal()
     mavenCentral()
 }
 
 sourceSets {
+    main {
+        resources {
+            srcDirs "src/main/webapp"
+        }
+    }
     integrationTest {
         java {
             compileClasspath += main.output
@@ -40,9 +46,10 @@ sourceSets {
 }
 
 configurations {
+    // I use Log4j, exclude default one Spring Boot provides
+    compile.exclude module: 'spring-boot-starter-logging'
     integrationTestCompile.extendsFrom testCompile
     integrationTestRuntime.extendsFrom testRuntime
-    //providedRuntime
 }
 
 dependencies {
@@ -51,41 +58,46 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("org.springframework.boot:spring-boot-starter-jdbc")
 
-    // Testing
-    testCompile("org.springframework.boot:spring-boot-starter-test")
-    testCompile("org.springframework.security:spring-security-test")
+    // Log4j
+    compile "org.apache.logging.log4j:log4j-core:${log4jVersion}"
+    compile "org.apache.logging.log4j:log4j-api:${log4jVersion}"
+    compile "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}"
 
-	// Mapping framework    
-	compile("net.sf.dozer:dozer:5.5.1")    
+	// Mapping framework
+    compile("net.sf.dozer:dozer:${dozerVersion}")
     
     // Amazon Web Services
-    compile("org.springframework.cloud:spring-cloud-aws-context:1.1.3.RELEASE")
+    compile("org.springframework.cloud:spring-cloud-aws-context:${springAWSVersion}")
     
     // Util to manipulate IO
-    compile("commons-io:commons-io:2.4")
+    compile("commons-io:commons-io:${apacheCommonsVersion}")
     
     // Security
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.security:spring-security-taglibs")
-    compile("com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:1.1")
+    compile("com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:${owaspSanitizer}")
     
     // Frontend
-    compile("org.apache.tiles:tiles-extras:3.0.5")
-    compile("javax.servlet:jstl:1.2")
+    compile("org.apache.tiles:tiles-extras:${apacheTilesExtra}")
+    compile("javax.servlet:jstl:${jstlVersion}")
     
     // JPA Driver for Database
-	compile('org.postgresql:postgresql:9.4.1212')
-    compile 'org.hibernate:hibernate-hikaricp:4.3.7.Final'
+    compile("org.postgresql:postgresql:${postgresqlVersion}")
+    compile("org.hibernate:hibernate-hikaricp:${hikaricpVersion}")
 	// SQLite
 	compile('org.xerial:sqlite-jdbc:3.8.11.2')
     // H2 In Memory
-    compile("com.h2database:h2:1.4.195")
-
+    compile("com.h2database:h2:${h2Version}")
+    // Hibernate Second Level Cache
+    compile("org.hibernate:hibernate-ehcache:${hibernateSecondLevelCacheVersion}")
 
     // Tomcat
-    // This is for IntelliJ
     compile("org.springframework.boot:spring-boot-starter-tomcat")
     compile("org.apache.tomcat.embed:tomcat-embed-jasper")
+
+    // Testing
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile("org.springframework.security:spring-security-test")
 }
 
 task wrapper(type: Wrapper) {
@@ -95,7 +107,8 @@ task wrapper(type: Wrapper) {
 task integrationTest(type: Test) {
     testClassesDir = sourceSets.integrationTest.output.classesDir
     classpath = sourceSets.integrationTest.runtimeClasspath
-    //outputs.upToDateWhen { false }
+    // Integration test are always out of date, so they will alway run even if there are no changes
+    outputs.upToDateWhen { false }
 }
 
 tasks.withType(Test) {

@@ -3,8 +3,9 @@ package com.kiesoft.sstarter.domain.user;
 import com.kiesoft.sstarter.domain.BaseEntity;
 
 import java.util.List;
+import java.util.Set;
 
-public interface User<T> extends BaseEntity {
+public interface User<T,U> extends BaseEntity {
 
     String getUsername();
 
@@ -18,8 +19,16 @@ public interface User<T> extends BaseEntity {
 
     void setEnabled(Boolean enabled);
 
-    List<T> getRoles();
+    Set<T> getRoles();
 
-    void setRoles(List<T> roles);
+    void setRoles(Set<T> roles);
+
+    Set<U> getArticles();
+
+    void setArticles(Set<U> articles);
+
+    void addArticle(U article);
+
+    void removeArticle(U article);
 
 }

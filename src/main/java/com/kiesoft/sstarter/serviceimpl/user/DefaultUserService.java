@@ -1,7 +1,6 @@
 package com.kiesoft.sstarter.serviceimpl.user;
 
 import com.kiesoft.sstarter.dto.user.UserDTO;
-import com.kiesoft.sstarter.exception.ElementNotFoundException;
 import com.kiesoft.sstarter.exception.PersistenceProblemException;
 import com.kiesoft.sstarter.jpa.entity.user.UserEntity;
 import com.kiesoft.sstarter.jpa.repository.UserRepository;
@@ -13,8 +12,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service(value = "userService")
 public class DefaultUserService implements UserService {
@@ -39,24 +39,6 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
-    public UserDTO findOne(Long id) {
-        UserEntity entity = repository.findOne(id);
-        if (entity == null) {
-            throw new ElementNotFoundException(UserEntity.class.toString(), id);
-        }
-        return dozerBeanMapper.map(entity, UserDTO.class);
-    }
-
-    @Override
-    public Page<UserDTO> findAll(Pageable pageable) {
-        List<UserDTO> listDTO = new ArrayList<>();
-        for (UserEntity item : repository.findAll(pageable)) {
-            listDTO.add(dozerBeanMapper.map(item, UserDTO.class));
-        }
-        return new PageImpl<>(listDTO, pageable, repository.count());
-    }
-
-    @Override
     public void delete(UserDTO userDTO) throws PersistenceProblemException {
         try {
             repository.delete(dozerBeanMapper.map(userDTO, UserEntity.class));
@@ -66,7 +48,30 @@ public class DefaultUserService implements UserService {
     }
 
     @Override
+    public UserDTO findOne(Long id) {
+        UserEntity entity = repository.findOne(id);
+        if (Objects.nonNull(entity)) {
+            return dozerBeanMapper.map(entity, UserDTO.class);
+        }
+        return null;
+    }
+
+    @Override
+    public Page<UserDTO> findAll(Pageable pageable) {
+        Page<UserEntity> page = repository.findAll(pageable);
+        List<UserDTO> listDTO = page.getContent().stream()
+                .map(userEntity -> dozerBeanMapper.map(userEntity, UserDTO.class))
+                .collect(Collectors.toList());
+        return new PageImpl<>(listDTO, pageable, page.getTotalElements());
+    }
+
+
+    @Override
     public UserDTO findByUsername(String username) {
-        return dozerBeanMapper.map(repository.findByUsername(username), UserDTO.class);
+        UserEntity entity = repository.findByUsername(username);
+        if (Objects.nonNull(entity)) {
+            return dozerBeanMapper.map(entity, UserDTO.class);
+        }
+        return null;
     }
 }

@@ -2,17 +2,19 @@ package com.kiesoft.sstarter.dto.user;
 
 import com.kiesoft.sstarter.domain.user.User;
 import com.kiesoft.sstarter.dto.AbstractDTO;
+import com.kiesoft.sstarter.dto.article.ArticleDTO;
 import com.kiesoft.sstarter.dto.role.RoleDTO;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-public class UserDTO extends AbstractDTO implements User<RoleDTO> {
+public class UserDTO extends AbstractDTO implements User<RoleDTO, ArticleDTO> {
 
     private String username;
     private String password;
     private Boolean enabled;
-    private List<RoleDTO> roles = new ArrayList<>();
+    private Set<RoleDTO> roles = new HashSet<>();
+    private Set<ArticleDTO> articles = new HashSet<>();
 
     @Override
     public String getUsername() {
@@ -30,7 +32,7 @@ public class UserDTO extends AbstractDTO implements User<RoleDTO> {
     }
 
     @Override
-    public List<RoleDTO> getRoles() {
+    public Set<RoleDTO> getRoles() {
         return roles;
     }
 
@@ -50,8 +52,30 @@ public class UserDTO extends AbstractDTO implements User<RoleDTO> {
     }
 
     @Override
-    public void setRoles(List<RoleDTO> roles) {
+    public void setRoles(Set<RoleDTO> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public Set<ArticleDTO> getArticles() {
+        return articles;
+    }
+
+    @Override
+    public void setArticles(Set<ArticleDTO> articles) {
+        this.articles = articles;
+    }
+
+    @Override
+    public void addArticle(ArticleDTO article) {
+        article.setOwner(this);
+        this.articles.add(article);
+    }
+
+    @Override
+    public void removeArticle(ArticleDTO article) {
+        article.setOwner(null);
+        this.articles.remove(article);
     }
 
 }

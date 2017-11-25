@@ -44,6 +44,10 @@ public class Database {
         properties.put("hibernate.hbm2ddl.auto", env.getProperty("jdbc.database.ddl-auto"));
         properties.put("hibernate.connection.provider_class", env.getProperty("jdbc.database.pool-provider"));
         properties.put("hibernate.hikari.dataSourceClassName", env.getProperty("jdbc.database.dataSourceClassName"));
+        properties.put("hibernate.show_sql", env.getProperty("jdbc.database.show-sql"));
+        properties.put("hibernate.format_sql", env.getProperty("jdbc.database.show-sql"));
+        properties.put("hibernate.cache.use_second_level_cache", env.getProperty("jdbc.hibernate.cache.second-level"));
+        properties.put("hibernate.cache.region.factory_class", env.getProperty("jdbc.hibernate.cache.region-factory-class"));
         em.setJpaPropertyMap(properties);
 
         return em;

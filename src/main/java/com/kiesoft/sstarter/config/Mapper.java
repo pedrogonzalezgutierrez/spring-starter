@@ -12,7 +12,7 @@ public class Mapper {
         DozerBeanMapper dozerBeanMapper = new DozerBeanMapper();
 
 //        List<String> mappingFiles = Arrays.asList("classpath:/dozer/publish.xml");
-//        List<String> mappingFiles = Arrays.asList("file:///home/pedrola/workspace/mvb/mvb-webapp/src/main/resources/dozer/publish.xml");
+//        List<String> mappingFiles = Arrays.asList("file:///home/pedrola/workspace/mvc/mvc-webapp/src/main/resources/dozer/publish.xml");
 //        dozerBeanMapper.setMappingFiles(mappingFiles);
 
         return dozerBeanMapper;

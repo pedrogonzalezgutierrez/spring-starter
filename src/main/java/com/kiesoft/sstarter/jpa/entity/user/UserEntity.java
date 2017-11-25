@@ -2,26 +2,31 @@ package com.kiesoft.sstarter.jpa.entity.user;
 
 import com.kiesoft.sstarter.domain.user.User;
 import com.kiesoft.sstarter.jpa.entity.AbstractEntity;
+import com.kiesoft.sstarter.jpa.entity.article.ArticleEntity;
 import com.kiesoft.sstarter.jpa.entity.role.RoleEntity;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "sstarter_user", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
-public class UserEntity extends AbstractEntity implements User<RoleEntity> {
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = "findOne", attributeNodes = {
+                @NamedAttributeNode(value = "roles"),
+                @NamedAttributeNode(value = "articles")
+        })
+})
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class UserEntity extends AbstractEntity implements User<RoleEntity, ArticleEntity> {
 
     private String username;
     private String password;
     private Boolean enabled;
-    private List<RoleEntity> roles = new ArrayList<>();
+    private Set<RoleEntity> roles = new HashSet<>();
+    private Set<ArticleEntity> articles = new HashSet<>();
 
     @Override
     public String getUsername() {
@@ -53,19 +58,44 @@ public class UserEntity extends AbstractEntity implements User<RoleEntity> {
         this.enabled = enabled;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "sstarter_user_roles",
             joinColumns = {@JoinColumn(name = "idUser")},
             inverseJoinColumns = {@JoinColumn(name = "idRole")})
     @Override
-    public List<RoleEntity> getRoles() {
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    public Set<RoleEntity> getRoles() {
         return roles;
     }
 
     @Override
-    public void setRoles(List<RoleEntity> roles) {
+    public void setRoles(Set<RoleEntity> roles) {
         this.roles = roles;
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+    @Override
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    public Set<ArticleEntity> getArticles() {
+        return articles;
+    }
+
+    @Override
+    public void setArticles(Set<ArticleEntity> articles) {
+        this.articles = articles;
+    }
+
+    @Override
+    public void addArticle(ArticleEntity article) {
+        article.setOwner(this);
+        this.articles.add(article);
+    }
+
+    @Override
+    public void removeArticle(ArticleEntity article) {
+        article.setOwner(null);
+        this.articles.remove(article);
     }
 
 }

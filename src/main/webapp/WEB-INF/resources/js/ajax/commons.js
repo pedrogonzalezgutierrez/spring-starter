@@ -1,5 +1,5 @@
 function domainPrefix() {
-	// For example: /mvb
+	// For example: /mvc
 	var domainPrefix="";
 	return domainPrefix;
 }

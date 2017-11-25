@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ehcache>
+
+    <diskStore path="java.io.tmpdir"/>
+
+    <!--
+    eternal:
+    Sets whether elements are eternal. If eternal, timeouts are ignored and the element is never expired.
+
+    timeToIdleSeconds:
+    Sets the time to idle for an element before it expires.
+    i.e. The maximum amount of time between accesses before an element expires. Is only used if the element is not eternal.
+    Optional attribute. A value of 0 means that an Element can idle for infinity.
+    The default value is 0.
+    Let's say that timeToIdleSeconds = 3. Then the object will be invalidated if it hasn't been requested for 4 seconds.
+
+    timeToLiveSeconds:
+    Sets the time to live for an element before it expires.
+    i.e. The maximum time between creation time and when an element expires. Is only used if the element is not eternal.
+    Optional attribute. A value of 0 means that and Element can live for infinity.
+    The default value is 0.
+    If timeToLiveSeconds = 90, then the object will be removed from cache after 90 seconds, even if it has been requested few milliseconds in the 90th second of its short life.
+    -->
+
+    <defaultCache
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="300"
+    />
+        
+    <cache name="com.kiesoft.sstarter.jpa.entity.language.LanguageEntity"
+           maxElementsInMemory="25"
+           eternal="true"
+    />
+        
+    <cache name="com.kiesoft.sstarter.jpa.entity.role.RoleEntity"
+           maxElementsInMemory="10"
+           eternal="true"
+    />
+
+    <cache name="com.kiesoft.sstarter.jpa.entity.user.UserEntity"
+           maxElementsInMemory="1000"
+           eternal="false"
+           timeToIdleSeconds="300"
+    />
+
+    <cache name="com.kiesoft.sstarter.jpa.entity.user.UserEntity.roles"
+           maxElementsInMemory="1000"
+           eternal="false"
+           timeToIdleSeconds="300"
+    />
+
+    <cache name="com.kiesoft.sstarter.jpa.entity.user.UserEntity.articles"
+           maxElementsInMemory="1000"
+           eternal="false"
+           timeToIdleSeconds="300"
+    />
+
+</ehcache>

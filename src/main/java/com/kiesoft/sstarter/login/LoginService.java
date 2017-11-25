@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Objects;
 
 @Transactional
@@ -28,7 +29,7 @@ public class LoginService implements UserDetailsService {
                 userEntity.getEnabled(),
                 userEntity.getUsername(),
                 userEntity.getPassword(),
-                userEntity.getRoles()
+                new ArrayList<>(userEntity.getRoles())
         );
         return userDetails;
     }

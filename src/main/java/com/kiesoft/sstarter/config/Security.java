@@ -9,14 +9,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-import static com.kiesoft.sstarter.controller.language.AbstractLanguageController.ROUTING_LANGUAGE_CONTROLLER;
-import static com.kiesoft.sstarter.controller.login.AbstractLoginController.ROUTING_LOGIN;
-import static com.kiesoft.sstarter.controller.login.AbstractLoginController.ROUTING_LOGIN_FAILURE;
-import static com.kiesoft.sstarter.controller.login.AbstractLoginController.ROUTING_LOGIN_PAGE;
-import static com.kiesoft.sstarter.controller.login.AbstractLoginController.ROUTING_LOGOUT;
-import static com.kiesoft.sstarter.controller.profile.AbstractUserProfileController.ROUTING_USERPROFILE_CONTROLLER;
-import static com.kiesoft.sstarter.controller.role.AbstractRoleController.ROUTING_ROLE_CONTROLLER;
-import static com.kiesoft.sstarter.controller.user.AbstractUserController.ROUTING_USER_CONTROLLER;
+import static com.kiesoft.sstarter.controller.rest.user.AbstractRestUserController.ROUTING_REST_USER_CONTROLLER;
+import static com.kiesoft.sstarter.controller.mvc.language.AbstractLanguageController.ROUTING_LANGUAGE_CONTROLLER;
+import static com.kiesoft.sstarter.controller.mvc.login.AbstractLoginController.*;
+import static com.kiesoft.sstarter.controller.mvc.profile.AbstractUserProfileController.ROUTING_USERPROFILE_CONTROLLER;
+import static com.kiesoft.sstarter.controller.mvc.role.AbstractRoleController.ROUTING_ROLE_CONTROLLER;
+import static com.kiesoft.sstarter.controller.mvc.user.AbstractUserController.ROUTING_USER_CONTROLLER;
 
 @Configuration
 @EnableWebSecurity
@@ -31,6 +29,10 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .antMatchers(ROUTING_LANGUAGE_CONTROLLER + "/**").hasAnyRole("ADMIN", "EDITOR")
 
                 .antMatchers(ROUTING_USERPROFILE_CONTROLLER + "/**").authenticated()
+
+                .and().csrf().disable()
+                .authorizeRequests()
+                .antMatchers(ROUTING_REST_USER_CONTROLLER + "/**").permitAll()
 
                 .and()
                 .formLogin()
