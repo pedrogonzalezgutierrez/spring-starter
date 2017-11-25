@@ -3,6 +3,9 @@ package com.kiesoft.sstarter.controller.rest.user;
 import com.kiesoft.sstarter.dto.user.UserDTO;
 import com.kiesoft.sstarter.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +36,11 @@ public class RestUserController extends AbstractRestUserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(userDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = ROUTING_FIND_ALL, method = RequestMethod.GET)
+    public ResponseEntity<Page<UserDTO>> findAll(@PageableDefault(size = 5) Pageable pageable) {
+        return new ResponseEntity<>(userService.findAll(pageable), HttpStatus.OK);
     }
 
     @RequestMapping(value = ROUTING_FIND_BY_USERNAME, method = RequestMethod.GET)
