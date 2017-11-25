@@ -1,9 +1,9 @@
 # Spring Starter
 
-Spring-starter provides a simple architecture of a Spring web application full of useful tools. It has a flexible abstraction so it is easy to add more features.
+Spring Starter it is a project that provides every useful tool you would like to use in your web application, so it is the perfect starting point. It is very flexible so it allows you to add new features in a easy way.
 
 ## Gradle and Spring Boot 
-This web application is using the Spring Boot Gradle Plugin, allowing you to package executable jar or war archives, run Spring Boot applications and use the dependency management provided by spring-boot-dependencies.
+The Spring Boot Gradle Plugin provides Spring Boot support in Gradle, allowing you to package executable jar or war archives, run Spring Boot applications and use the dependency management provided by spring-boot-dependencies. Spring Boot makes it easy to create stand-alone, production-grade Spring based Applications that can you can "just run".
 
 ## JPA 2.1
 The Java Persistence API is a POJO persistence API for object/relational mapping. It contains a full object/relational mapping specification supporting the use of Java language metadata annotations and/or XML descriptors to define the mapping between Java objects and a relational database. Directly, JPA can't be used for persistence. Persistence, means which deals with storing and retrieving of application data. It needs an ORM implementation to persist the java objects into DB like Hibernate
@@ -17,17 +17,27 @@ Performance gains can be significant if read/write ratios of cached content are 
 
 Statistics are expose by JMX bean only in **local** profile.
 ## Spring Security
-Spring Security is a Java/Java EE framework that provides authentication, authorization and other security features for enterprise applications. There are two roles *ROLE_ADMIN* (can manage users, roles and languages) and *ROLE_EDITOR* (can manage languages).
+Spring Security provides comprehensive security services for J2EE-based enterprise software applications. There is a particular emphasis on supporting projects built using The Spring Framework, which is the leading J2EE solution for enterprise software development. People use Spring Security for many reasons, but most are drawn to the project after finding the security features of J2EE's Servlet Specification or EJB Specification lack the depth required for typical enterprise application scenarios.
 
-## Dozer
+There are two roles *ROLE_ADMIN* (can manage users, roles and languages) and *ROLE_EDITOR* (can manage languages).
+
+## Log4J
+log4j is a reliable, fast and flexible logging framework (APIs) written in Java, which is distributed under the Apache Software License. log4j is a popular logging package written in Java.  The output from Log4j can go to the console, but it can also go to an email server, a database table, a log file, or various other destinations. Another great benefit of Log4j is that different levels of logging can be set. The levels are hierarchical and are as follows: TRACE, DEBUG, INFO, WARN, ERROR, and FATAL.
+
+Typically, you can configure Log4j via a configuration file **log4j2.xml**. This means that you can change your logging configuration without requiring code updates. If you need to do something like set the log level to DEBUG for your deployed application in order to track down a particular bug, you can do this without redeploying your application. Instead, you can change your log configuration file, reread the configuration file, and your logging configuration gets updated.
+
+## Mapping framework: Dozer
 A mapping framework is useful in a layered architecture where you are creating layers of abstraction by encapsulating changes to particular data objects vs. propagating these objects to other layers (i.e. external service data objects, domain objects, data transfer objects, internal service data objects). Dozer bean is configured in the file *mapper.xml*.
 
-## Tiles, Bootstrap and Font Awesome
+## Tiles
 A free open-sourced templating framework for modern Java applications, based upon the Composite pattern it is built to simplify the development of user interfaces. Tiles allows authors to define page fragments which can be assembled into a complete pages at runtime. These fragments, or tiles, can be used as simple includes in order to reduce the duplication of common page elements or embedded within other tiles to develop a series of reusable templates. These templates streamline the development of a consistent look and feel across an entire application.
     
 In the file *tiles-definitions.xml* you can create your owns templates. There is one template *defaultTemplate* which provides a header, menu, content and a footer.
+
+### Jquery, Bootstrap and Font Awesome
 This project comes with a responsive design by Bootstrap3 and JQuery 3.2.1. You can use the set of icons of Bootstrap and Font Awesome as well.
 
+## User Interface
 There is a full User Interface for managing users, roles and languages.
 
 Homepage:
