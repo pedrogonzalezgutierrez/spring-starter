@@ -1,3 +1,5 @@
+https://github.com/srs/gradle-node-plugin/blob/master/docs/node.md
+
 # Spring Starter
 
 Spring Starter it is a project that provides every useful tool you would like to use in your web application, so it is the perfect starting point. It is very flexible so it allows you to add new features in a easy way.
