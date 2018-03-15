@@ -7,14 +7,24 @@ import com.kiesoft.sstarter.jpa.entity.role.RoleEntity;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "sstarter_user", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
 @NamedEntityGraphs({
-        @NamedEntityGraph(name = "findOne", attributeNodes = {
+        @NamedEntityGraph(name = "fullEntity", attributeNodes = {
                 @NamedAttributeNode(value = "roles"),
                 @NamedAttributeNode(value = "articles")
         })

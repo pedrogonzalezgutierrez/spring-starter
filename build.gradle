@@ -30,11 +30,6 @@ repositories {
 }
 
 sourceSets {
-    main {
-        resources {
-            srcDirs "src/main/webapp"
-        }
-    }
     integrationTest {
         java {
             compileClasspath += main.output
@@ -54,38 +49,20 @@ configurations {
 
 dependencies {
 	// Spring boot
-    compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
-    compile("org.springframework.boot:spring-boot-starter-jdbc")
+    compile("org.springframework.boot:spring-boot-starter-data-rest")
 
     // Log4j
     compile "org.apache.logging.log4j:log4j-core:${log4jVersion}"
     compile "org.apache.logging.log4j:log4j-api:${log4jVersion}"
     compile "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}"
 
-	// Mapping framework
-    compile("net.sf.dozer:dozer:${dozerVersion}")
-    
-    // Amazon Web Services
-    compile("org.springframework.cloud:spring-cloud-aws-context:${springAWSVersion}")
-    
-    // Util to manipulate IO
-    compile("commons-io:commons-io:${apacheCommonsVersion}")
-    
     // Security
-    compile("org.springframework.boot:spring-boot-starter-security")
-    compile("org.springframework.security:spring-security-taglibs")
     compile("com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:${owaspSanitizer}")
-    
-    // Frontend
-    compile("org.apache.tiles:tiles-extras:${apacheTilesExtra}")
-    compile("javax.servlet:jstl:${jstlVersion}")
-    
+
     // JPA Driver for Database
     compile("org.postgresql:postgresql:${postgresqlVersion}")
     compile("org.hibernate:hibernate-hikaricp:${hikaricpVersion}")
-	// SQLite
-	compile('org.xerial:sqlite-jdbc:3.8.11.2')
     // H2 In Memory
     compile("com.h2database:h2:${h2Version}")
     // Hibernate Second Level Cache

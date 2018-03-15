@@ -8,14 +8,15 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface UserRepository extends PagingAndSortingRepository<UserEntity, Long> {
 
-    @EntityGraph(value = "findOne", type = EntityGraph.EntityGraphType.FETCH)
+    @EntityGraph(value = "fullEntity", type = EntityGraph.EntityGraphType.FETCH)
     @Override
     UserEntity findOne(Long id);
 
-    @EntityGraph(value = "findOne", type = EntityGraph.EntityGraphType.FETCH)
-    UserEntity findByUsername(String username);
-
-    @EntityGraph(value = "findOne", type = EntityGraph.EntityGraphType.FETCH)
+    @EntityGraph(value = "fullEntity", type = EntityGraph.EntityGraphType.FETCH)
     @Override
     Page<UserEntity> findAll(Pageable pageable);
+
+    @EntityGraph(value = "fullEntity", type = EntityGraph.EntityGraphType.FETCH)
+    UserEntity findByUsername(String username);
+
 }

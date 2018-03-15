@@ -31,7 +31,7 @@ public class Database {
     @Primary
     public LocalContainerEntityManagerFactoryBean databaseEntityManager() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setPackagesToScan(new String[]{env.getProperty("jdbc.database.package-jpa")});
+        em.setPackagesToScan(env.getProperty("jdbc.database.package-jpa"));
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
