@@ -1,61 +1,29 @@
-buildscript {
-
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") 
-    }
-    
-    repositories {
-		mavenCentral()
-        maven { url "http://repo.spring.io/libs-milestone" }
-		maven { url "https://repo.spring.io/snapshot" }
-        maven { url "https://repo.spring.io/milestone" }
-    }
+plugins {
+    id "org.springframework.boot" version "2.0.1.RELEASE"
+    id "com.moowork.node" version "1.2.0"
 }
 
 apply plugin: 'java'
 apply plugin: 'idea'
-apply plugin: 'org.springframework.boot'
+
+jar {
+    baseName = 'spring-starter'
+    version = '1.0.13'
+}
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-jar {
-    baseName = 'spring-starter'
-    version =  '1.0.0'
-}
-
 repositories {
-    mavenLocal()
     mavenCentral()
-}
-
-sourceSets {
-    integrationTest {
-        java {
-            compileClasspath += main.output
-            runtimeClasspath += main.output
-            srcDirs = ['src/integrationTest/java']
-        }
-        resources.srcDir file('src/integrationTest/resources')
-    }
-}
-
-configurations {
-    // I use Log4j, exclude default one Spring Boot provides
-    compile.exclude module: 'spring-boot-starter-logging'
-    integrationTestCompile.extendsFrom testCompile
-    integrationTestRuntime.extendsFrom testRuntime
 }
 
 dependencies {
 	// Spring boot
-    compile("org.springframework.boot:spring-boot-starter-data-jpa")
-    compile("org.springframework.boot:spring-boot-starter-data-rest")
-
-    // Log4j
-    compile "org.apache.logging.log4j:log4j-core:${log4jVersion}"
-    compile "org.apache.logging.log4j:log4j-api:${log4jVersion}"
-    compile "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}"
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-devtools:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
 
     // Security
     compile("com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:${owaspSanitizer}")
@@ -68,28 +36,25 @@ dependencies {
     // Hibernate Second Level Cache
     compile("org.hibernate:hibernate-ehcache:${hibernateSecondLevelCacheVersion}")
 
-    // Tomcat
-    compile("org.springframework.boot:spring-boot-starter-tomcat")
-    compile("org.apache.tomcat.embed:tomcat-embed-jasper")
-
     // Testing
-    testCompile("org.springframework.boot:spring-boot-starter-test")
-    testCompile("org.springframework.security:spring-security-test")
+//    testCompile("org.springframework.boot:spring-boot-starter-test")
+//    testCompile("org.springframework.security:spring-security-test")
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.9'
+    gradleVersion = '4.6'
 }
 
-task integrationTest(type: Test) {
-    testClassesDir = sourceSets.integrationTest.output.classesDir
-    classpath = sourceSets.integrationTest.runtimeClasspath
-    // Integration test are always out of date, so they will alway run even if there are no changes
-    outputs.upToDateWhen { false }
+task webpack(type: NodeTask, dependsOn: 'npmInstall') {
+    script = project.file('node_modules/.bin/webpack')
 }
 
-tasks.withType(Test) {
-    reports.html.destination = file("${reporting.baseDir}/${name}")
+task watch(type: NodeTask, dependsOn: 'npmInstall') {
+    script = project.file('node_modules/.bin/webpack')
+    args = ['--watch', '--display-error-details']
 }
-check.dependsOn integrationTest
-integrationTest.mustRunAfter test
+
+processResources.dependsOn 'webpack'
+
+// https://objectpartners.com/2016/04/22/using-webpack-with-gradle/
+// https://www.codementor.io/tamizhvendan/beginner-guide-setup-reactjs-environment-npm-babel-6-webpack-du107r9zr
