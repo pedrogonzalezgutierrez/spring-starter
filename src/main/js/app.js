@@ -1,10 +1,24 @@
 import React from 'react';
-import {render} from 'react-dom';
+import Header from './Header.js'
+
+import ReactDOM from 'react-dom';
+import { Navbar, Nav, NavItem, Glyphicon } from 'react-bootstrap';
 
 class App extends React.Component {
-    render () {
-        return <p>Eres basuraaaaaaaaaaaaaaaaaaaaaaaaaaaaaa askerozas</p>;
+    render() {
+        return (
+            <div>
+                <Header/>
+
+                <Glyphicon glyph="glyphicon glyphicon-asterisk" />
+
+                Hello React!
+            </div>
+        );
     }
 }
 
-render(<App/>, document.getElementById('react'));
+ReactDOM.render(
+    <App />,
+    document.getElementById('react')
+);
